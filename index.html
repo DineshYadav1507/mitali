@@ -720,10 +720,7 @@ Building <strong>Scalable Java Applications</strong>, developing <strong>Cloud-N
             <span class="meta-chip">✈️ Open to Relocate</span>
             <span class="meta-chip">✉ chivatemitali@gmail.com</span>
             <span class="meta-chip">☏ +1 984-944-9268</span>
-            <a href="https://wa.me/19849449268?text=Welcome%20to%20Mitali%20Chivate"
-   target="_blank"
-   class="meta-chip">
-   💬 WhatsApp</a>
+            <span class="meta-chip">🎓 M.S. Computer Science — UNC Charlotte</span>
           </div>
           <div class="hero-cta">
             <a class="btn btn-primary" href="Mitali_Chivate_Resume.pdf" download>📄 Download Resume</a>
@@ -1208,15 +1205,9 @@ Building <strong>Scalable Java Applications</strong>, developing <strong>Cloud-N
     </div>
   </div>
 </section>
-  <section id="contact-widget">
 
-  <!-- Floating WhatsApp -->
-  <a href="https://wa.me/19849449268?text=Welcome%20to%20Mitali%20Chivate"
-     class="whatsapp-float"
-     target="_blank"
-     aria-label="WhatsApp">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
-  </a>
+  <!-- CONTACT POPUP (WhatsApp removed) -->
+  <section id="contact-widget">
 
   <!-- Contact Popup -->
   <div id="contactPopup" class="popup">
@@ -1228,16 +1219,11 @@ Building <strong>Scalable Java Applications</strong>, developing <strong>Cloud-N
 
      <p>
     Java Full Stack Developer | AWS & Spring Boot <br>
-    📍 North Carolina, USA
+    📍 North Carolina, USA <br>
+    ☏ +1 (984) 944-9268
 </p>
 
       <div class="buttons">
-
-        <a href="https://wa.me/19849449268?text=Welcome%20to%20Mitali%20Chivate"
-           target="_blank"
-           class="btn whatsapp-btn">
-          💬 WhatsApp
-        </a>
 
         <a href="https://www.linkedin.com/in/mitali-chivate"
            target="_blank"
@@ -1245,7 +1231,9 @@ Building <strong>Scalable Java Applications</strong>, developing <strong>Cloud-N
           🔗 LinkedIn
         </a>
 
-    
+        <a href="tel:+19849449268" class="btn phone-btn">
+          ☏ Call +1 (984) 944-9268
+        </a>
 
         <!-- Resume Download -->
         <a href="Mitali_Chivate_Resume.pdf" download class="btn resume-btn"
@@ -1258,32 +1246,6 @@ Building <strong>Scalable Java Applications</strong>, developing <strong>Cloud-N
   </div>
 
   <style>
-
-    /* Floating WhatsApp */
-    .whatsapp-float{
-      position:fixed;
-      right:25px;
-      bottom:25px;
-      z-index:99999;
-    }
-
-    .whatsapp-float img{
-      width:65px;
-      animation:pulse 1.2s infinite;
-      filter:drop-shadow(0 5px 15px rgba(37,211,102,.6));
-    }
-
-    @keyframes pulse{
-      0%{
-        transform:scale(1);
-      }
-      50%{
-        transform:scale(1.2);
-      }
-      100%{
-        transform:scale(1);
-      }
-    }
 
     /* Popup Background */
     .popup{
@@ -1346,10 +1308,6 @@ Building <strong>Scalable Java Applications</strong>, developing <strong>Cloud-N
 
     .btn:hover{
       transform:translateY(-3px);
-    }
-
-    .whatsapp-btn{
-      background:#25D366;
     }
 
     .linkedin-btn{
@@ -1423,13 +1381,6 @@ Building <strong>Scalable Java Applications</strong>, developing <strong>Cloud-N
        rel="noopener">
         LinkedIn ↗
     </a>
-
-    <a class="btn btn-ghost"
-       href="https://wa.me/YOUR_WHATSAPP_NUMBER"
-       target="_blank"
-       rel="noopener">
-        <i class="fab fa-whatsapp"></i> WhatsApp ↗
-    </a>
 </div>
 </div>
     </div>
@@ -1450,6 +1401,11 @@ Building <strong>Scalable Java Applications</strong>, developing <strong>Cloud-N
        style="color:#00E5FF; text-decoration:none;">
        +1 (984) 944-9268
     </a>
+  </span>
+
+  <span>
+    Education:
+    <span style="color:#00E5FF;">M.S. CS — UNC Charlotte</span>
   </span>
 
   <span>
@@ -1509,8 +1465,11 @@ Building <strong>Scalable Java Applications</strong>, developing <strong>Cloud-N
   }
 
   // last verified timestamp
-  document.getElementById('lastUpdated').textContent =
-    'Status page last verified — ' + new Date().toLocaleDateString('en-IN', { year:'numeric', month:'long', day:'numeric' });
+  const lastUpdatedEl = document.getElementById('lastUpdated');
+  if (lastUpdatedEl) {
+    lastUpdatedEl.textContent =
+      'Status page last verified — ' + new Date().toLocaleDateString('en-IN', { year:'numeric', month:'long', day:'numeric' });
+  }
 
   // camera feed live clock
   const camClock = document.getElementById('camClock');
