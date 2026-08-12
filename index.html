@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mitali Chivate - Software Engineer |</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  :root{
+    --bg:#0b0f14;
+    --bg-soft:#10151c;
+    --surface:#151b24;
+    --surface-2:#1a212b;
+    --border:#232c38;
+    --border-soft:#1c2430;
+    --text:#e7ecf1;
+    --text-dim:#8c98a6;
+    --text-faint:#56626f;
+    --accent:#4fe3c9;
+    --accent-dim:#2b6f64;
+    --status-op:#3ddc84;
+    --status-op-dim:#143323;
+    --status-warn:#f2b84b;
+    --status-warn-dim:#3a2c10;
+    --status-crit:#ff6b6b;
+    --mono:'JetBrains Mono', ui-monospace, monospace;
+    --sans:'IBM Plex Sans', system-ui, sans-serif;
+    --radius:10px;
+    --container:1080px;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{color:inherit;text-decoration:none;}
+
+  .wrap{
+    max-width:var(--container);
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  ::selection{background:var(--accent);color:#06110f;}
+
+  :focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:3px;
+    border-radius:4px;
+  }
+
+
+
+
+  /* background grid texture */
+  body{
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size:40px 40px;
+  }
+
+  /* ---------- status bar ---------- */
+  .status-bar{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:rgba(11,15,20,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .status-bar .wrap{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    height:56px;
+  }
+  .status-left{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:var(--mono);
+    font-size:12.5px;
+    letter-spacing:0.04em;
+    white-space:nowrap;
+  }
+  .pulse-dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--status-op);
+    box-shadow:0 0 0 0 rgba(61,220,132,0.6);
+    animation:pulse 2.2s infinite;
+    flex-shrink:0;
+  }
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(61,220,132,0.55);}
+    70%{box-shadow:0 0 0 7px rgba(61,220,132,0);}
+    100%{box-shadow:0 0 0 0 rgba(61,220,132,0);}
+  }
+  .status-left .label-op{color:var(--status-op);font-weight:600;}
+  .status-left .sep{color:var(--text-faint);}
+  .status-left .uptime-tag{color:var(--text-dim);}
+
+  nav.primary-nav{display:flex;gap:26px;font-family:var(--mono);font-size:12.5px;}
+  nav.primary-nav a{color:var(--text-dim);transition:color .15s;}
+  nav.primary-nav a:hover{color:var(--accent);}
+
+  .nav-toggle{
+    display:none;
+    background:none;border:1px solid var(--border);
+    color:var(--text);
+    width:34px;height:34px;border-radius:6px;
+    font-family:var(--mono);
+    cursor:pointer;
+  }
+
+  @media (max-width:780px){
+    nav.primary-nav{
+      position:absolute;
+      top:56px;left:0;right:0;
+      background:var(--bg-soft);
+      border-bottom:1px solid var(--border);
+      flex-direction:column;
+      gap:0;
+      padding:6px 0;
+      display:none;
+    }
+    nav.primary-nav.open{display:flex;}
+    nav.primary-nav a{padding:12px 28px;border-top:1px solid var(--border-soft);}
+    .nav-toggle{display:flex;align-items:center;justify-content:center;}
+  }
+
+  /* ---------- eyebrow / shared section header ---------- */
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--accent);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:14px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:18px;height:1px;
+    background:var(--accent);
+    display:inline-block;
+  }
+  .section-title{
+    font-size:clamp(1.5rem, 2.4vw, 2.1rem);
+    font-weight:650;
+    letter-spacing:-0.01em;
+    margin-bottom:8px;
+  }
+  .section-sub{color:var(--text-dim);font-size:14.5px;max-width:560px;margin-bottom:42px;}
+
+  section{padding:88px 0;border-bottom:1px solid var(--border-soft);}
+  section:last-of-type{border-bottom:none;}
+
+  /* reveal animation */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease;}
+  .reveal.is-visible{opacity:1;transform:translateY(0);}
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding-top:72px;
+    padding-bottom:0;
+    border-bottom:none;
+  }
+  .hero-top{
+    display:flex;
+    flex-wrap:wrap;
+    gap:32px;
+    align-items:flex-start;
+    justify-content:space-between;
+  }
+  .hero-id{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--text-faint);
+    margin-bottom:18px;
+  }
+  .hero h1{
+    font-size:clamp(2.4rem, 6vw, 4.2rem);
+    font-weight:700;
+    letter-spacing:-0.02em;
+    line-height:1.04;
+  }
+  .hero h1 span{color:var(--accent);}
+  .hero .role{
+    font-family:var(--mono);
+    font-size:clamp(15px,2vw,18px);
+    color:var(--text-dim);
+    margin-top:14px;
+    letter-spacing:0.01em;
+  }
+  .hero .tagline{
+    margin-top:20px;
+    max-width:560px;
+    color:var(--text-dim);
+    font-size:16px;
+  }
+  .hero .tagline strong{color:var(--text);font-weight:600;}
+
+  .uptime-card{
+    border:1px solid var(--border);
+    background:var(--surface);
+    border-radius:var(--radius);
+    padding:18px 22px;
+    min-width:200px;
+    text-align:left;
+  }
+  .uptime-card .u-label{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.08em;
+    color:var(--text-faint);
+    text-transform:uppercase;
+    margin-bottom:8px;
+  }
+  .uptime-card .u-value{
+    font-family:var(--mono);
+    font-size:34px;
+    font-weight:700;
+    color:var(--accent);
+    line-height:1;
+  }
+  .uptime-card .u-value small{font-size:16px;color:var(--text-dim);font-weight:500;}
+  .uptime-card .u-foot{font-size:12px;color:var(--text-faint);margin-top:8px;}
+
+  .hero-side{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    align-items:stretch;
+  }
+
+  .camera-frame{
+    width:230px;
+    background:#06090c;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:12px;
+  }
+  .cam-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-family:var(--mono);
+    font-size:9.5px;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    color:var(--text-faint);
+    margin-bottom:9px;
+  }
+  .cam-head .rec{display:flex;align-items:center;gap:5px;color:var(--status-crit);}
+  .rec-dot{width:6px;height:6px;border-radius:50%;background:var(--status-crit);animation:pulse-rec 1.4s infinite;}
+  @keyframes pulse-rec{0%,100%{opacity:1;}50%{opacity:0.25;}}
+
+  .cam-viewport{position:relative;border-radius:6px;overflow:hidden;line-height:0;}
+  .cam-viewport img{width:100%;display:block;filter:contrast(1.08) saturate(0.94);}
+  .cam-viewport::after{
+    content:"";
+    position:absolute;inset:0;
+    background:linear-gradient(to bottom, transparent 0%, rgba(79,227,201,0.10) 50%, transparent 100%);
+    background-size:100% 240%;
+    animation:scan 5s linear infinite;
+    mix-blend-mode:screen;
+    pointer-events:none;
+  }
+  @keyframes scan{0%{background-position:0 -140%;}100%{background-position:0 140%;}}
+
+  .cam-viewport .corner{position:absolute;width:14px;height:14px;z-index:2;}
+  .cam-viewport .corner.tl{top:5px;left:5px;border-top:2px solid var(--accent);border-left:2px solid var(--accent);}
+  .cam-viewport .corner.tr{top:5px;right:5px;border-top:2px solid var(--accent);border-right:2px solid var(--accent);}
+  .cam-viewport .corner.bl{bottom:5px;left:5px;border-bottom:2px solid var(--accent);border-left:2px solid var(--accent);}
+  .cam-viewport .corner.br{bottom:5px;right:5px;border-bottom:2px solid var(--accent);border-right:2px solid var(--accent);}
+
+  .cam-foot{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-top:10px;
+    font-family:var(--mono);
+    font-size:10px;
+    color:var(--text-faint);
+    letter-spacing:0.03em;
+  }
+
+  @media (max-width:780px){
+    .hero-side{flex-direction:row;flex-wrap:wrap;justify-content:center;width:100%;}
+    .camera-frame{width:200px;}
+  }
+  @media (max-width:460px){
+    .hero-side{flex-direction:column;align-items:center;}
+    .camera-frame, .uptime-card{width:100%;max-width:280px;}
+  }
+
+  .hero-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:30px;
+  }
+  .meta-chip{
+    border:1px solid var(--border);
+    background:var(--surface);
+    border-radius:999px;
+    padding:7px 14px;
+    font-size:13px;
+    color:var(--text-dim);
+    font-family:var(--mono);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .meta-chip svg{width:13px;height:13px;flex-shrink:0;}
+
+  .hero-cta{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap;}
+  .btn{
+    font-family:var(--mono);
+    font-size:13px;
+    padding:11px 20px;
+    border-radius:7px;
+    border:1px solid var(--border);
+    transition:all .15s ease;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+  .btn-primary{background:var(--accent);color:#06110f;border-color:var(--accent);font-weight:600;}
+  .btn-primary:hover{background:#6ff0da;}
+  .btn-ghost{color:var(--text);}
+  .btn-ghost:hover{border-color:var(--accent);color:var(--accent);}
+
+  /* marquee */
+  .marquee-wrap{
+    margin-top:56px;
+    border-top:1px solid var(--border-soft);
+    border-bottom:1px solid var(--border-soft);
+    overflow:hidden;
+    background:var(--bg-soft);
+  }
+  .marquee{
+    display:flex;
+    width:max-content;
+    animation:scroll-left 32s linear infinite;
+  }
+  .marquee span{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--text-faint);
+    padding:14px 28px;
+    white-space:nowrap;
+    letter-spacing:0.03em;
+  }
+  .marquee span b{color:var(--text-dim);font-weight:500;}
+  @keyframes scroll-left{
+    from{transform:translateX(0);}
+    to{transform:translateX(-50%);}
+  }
+
+  /* ---------- summary panel ---------- */
+  .report-panel{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-left:3px solid var(--accent);
+    border-radius:var(--radius);
+    padding:28px 30px;
+    font-size:15.5px;
+    color:var(--text-dim);
+    position:relative;
+  }
+  .report-panel .tag-row{
+    display:flex;justify-content:space-between;align-items:center;
+    font-family:var(--mono);font-size:11px;color:var(--text-faint);
+    margin-bottom:16px;text-transform:uppercase;letter-spacing:0.06em;
+  }
+  .report-panel p{color:var(--text);}
+  .report-panel p + p{margin-top:14px;color:var(--text-dim);}
+
+  /* ---------- incident log (experience) ---------- */
+  .incident-log{position:relative;}
+  .log-line{
+    position:relative;
+    border-left:1px solid var(--border);
+    margin-left:6px;
+    padding-left:36px;
+    display:flex;
+    flex-direction:column;
+    gap:36px;
+  }
+  .ticket{
+    position:relative;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:26px 28px;
+  }
+  .ticket::before{
+    content:"";
+    position:absolute;
+    left:-43px;
+    top:30px;
+    width:11px;height:11px;
+    border-radius:50%;
+    background:var(--bg);
+    border:2px solid var(--status-op);
+  }
+  .ticket.is-current::before{border-color:var(--status-warn);}
+  .ticket.is-current::after{
+    content:"";
+    position:absolute;
+    left:-43px;
+    top:30px;
+    width:11px;height:11px;
+    border-radius:50%;
+    border:2px solid var(--status-warn);
+    animation:pulse-warn 2.2s infinite;
+  }
+  @keyframes pulse-warn{
+    0%{box-shadow:0 0 0 0 rgba(242,184,75,0.55);}
+    70%{box-shadow:0 0 0 8px rgba(242,184,75,0);}
+    100%{box-shadow:0 0 0 0 rgba(242,184,75,0);}
+  }
+
+  .ticket-head{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:14px;
+    margin-bottom:6px;
+  }
+  .ticket-id{
+    font-family:var(--mono);
+    font-size:11.5px;
+    color:var(--text-faint);
+    letter-spacing:0.05em;
+  }
+  .status-pill{
+    font-family:var(--mono);
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:0.05em;
+    padding:4px 10px;
+    border-radius:5px;
+    text-transform:uppercase;
+    white-space:nowrap;
+  }
+  .status-pill.op{background:var(--status-op-dim);color:var(--status-op);}
+  .status-pill.warn{background:var(--status-warn-dim);color:var(--status-warn);}
+
+  .ticket h3{font-size:19px;font-weight:650;margin-top:8px;}
+  .ticket h3 .org{color:var(--accent);}
+  .ticket .when{
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--text-dim);
+    margin-top:5px;
+  }
+  .ticket ul{
+    margin-top:16px;
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+  }
+  .ticket li{
+    font-size:14.5px;
+    color:var(--text-dim);
+    padding-left:18px;
+    position:relative;
+  }
+  .ticket li::before{
+    content:"›";
+    position:absolute;left:0;top:0;
+    color:var(--accent);
+    font-family:var(--mono);
+  }
+  .tag-list{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px;}
+  .tag-list span{
+    font-family:var(--mono);
+    font-size:11.5px;
+    color:var(--text-dim);
+    border:1px solid var(--border);
+    background:var(--surface-2);
+    padding:4px 10px;
+    border-radius:5px;
+  }
+
+  /* ---------- service catalog (skills) ---------- */
+  .catalog-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:18px;
+  }
+  @media (max-width:900px){.catalog-grid{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:600px){.catalog-grid{grid-template-columns:1fr;}}
+
+  .catalog-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:22px 22px 24px;
+    transition:border-color .15s, transform .15s;
+  }
+  .catalog-card:hover{border-color:var(--accent-dim);transform:translateY(-2px);}
+  .catalog-card h4{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:0.04em;
+    color:var(--accent);
+    text-transform:uppercase;
+    margin-bottom:14px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .catalog-card h4::before{content:"▣";font-size:11px;}
+  .chip-row{display:flex;flex-wrap:wrap;gap:7px;}
+  .chip-row span{
+    font-size:12.5px;
+    color:var(--text-dim);
+    background:var(--surface-2);
+    border:1px solid var(--border-soft);
+    padding:5px 10px;
+    border-radius:5px;
+  }
+
+  /* ---------- deployed solutions (projects) ---------- */
+  .deploy-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+  }
+  @media (max-width:900px){.deploy-grid{grid-template-columns:1fr;}}
+
+  .deploy-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:24px;
+    display:flex;
+    flex-direction:column;
+  }
+  .deploy-card .ticket-id{margin-bottom:10px;}
+  .deploy-card h4{font-size:16.5px;font-weight:650;margin-bottom:10px;line-height:1.3;}
+  .deploy-card p{font-size:13.8px;color:var(--text-dim);margin-bottom:8px;}
+  .deploy-card .tag-list{margin-top:auto;padding-top:16px;}
+
+  /* ---------- compliance record ---------- */
+  .compliance-table{
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    overflow:hidden;
+  }
+  .crow{
+    display:grid;
+    grid-template-columns:1fr 130px;
+    align-items:center;
+    padding:16px 22px;
+    border-bottom:1px solid var(--border-soft);
+    background:var(--surface);
+  }
+  .crow:last-child{border-bottom:none;}
+  .crow .c-name{font-size:14.5px;font-weight:560;}
+  .crow .c-sub{font-family:var(--mono);font-size:12px;color:var(--text-faint);margin-top:3px;}
+  .crow .status-pill{justify-self:end;}
+  .status-pill.complete{background:var(--status-op-dim);color:var(--status-op);}
+
+  /* ---------- footer / contact ---------- */
+  footer{padding:88px 0 56px;}
+  .contact-panel{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:48px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .contact-panel::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:radial-gradient(circle at 50% 0%, rgba(79,227,201,0.08), transparent 60%);
+    pointer-events:none;
+  }
+  .contact-panel .eyebrow{justify-content:center;}
+  .contact-panel .eyebrow::before{display:none;}
+  .contact-panel h2{font-size:clamp(1.6rem,3vw,2.3rem);font-weight:650;margin-bottom:14px;}
+  .contact-panel p{color:var(--text-dim);max-width:480px;margin:0 auto 28px;}
+  .contact-links{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;}
+
+  .foot-bar{
+    margin-top:40px;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+    font-family:var(--mono);
+    font-size:11.5px;
+    color:var(--text-faint);
+  }
+
+  @media (max-width:640px){
+    section{padding:64px 0;}
+    .contact-panel{padding:34px 22px;}
+    .crow{grid-template-columns:1fr;gap:8px;}
+    .crow .status-pill{justify-self:start;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+    .marquee{animation:none;}
+    .reveal{opacity:1;transform:none;}
+  }
+</style>
+</head>
+<body>
+
+<header class="status-bar">
+  <div class="wrap">
+    <div class="status-left">
+      <span class="pulse-dot" aria-hidden="true"></span>
+      <span class="label-op">Mitali Chivate </span>
+      <!-- <span class="sep">·</span> -->
+      <!-- <span class="uptime-tag">mitali-chivate.status</span> -->
+    </div>
+    <nav class="primary-nav" id="primaryNav">
+  <a href="#top">Overview</a>
+  <a href="#about">Story</a>
+  <a href="#experience">Career</a>
+  <a href="#skills">Skills</a>
+  <a href="#projects">Projects</a>
+  <a href="#certifications">Certifications</a>
+  <a href="#contact">Contact</a>
+</nav>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">≡</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="wrap">
+      <div class="hero-top">
+        <div style="flex:1;min-width:280px;">
+          <div class="hero-id">
+  Mitali Chivate / United States / OPEN TO RELOCATE</div>
+          <h1>Mitali <span>Chivate</span></h1>
+          <div class="role">s
+  <span id="changing-role"></span>
+</div>
+
+<style>
+.role{
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+#changing-role::after{
+  content: "|";
+  animation: blink 0.8s infinite;
+}
+
+@keyframes blink{
+  50%{
+    opacity: 0;
+  }
+}
+</style>
+
+<script>
+const roles = [
+ "Software Engineer",
+  "Java Developer",
+  "Java Full Stack Developer",
+  "Full Stack Developer",
+  "Backend Developer",
+  "Frontend Developer",
+  "Java Backend Engineer",
+  "Full Stack Engineer",
+  "Software Development Engineer",
+  "Application Developer",
+  "Microservices Developer",
+  "Cloud Engineer",
+  "AWS Java Developer",
+  "Spring Boot Developer",
+  "React Developer",
+];
+
+let i = 0;
+
+function changeRole() {
+  document.getElementById("changing-role").textContent = roles[i];
+  i = (i + 1) % roles.length;
+}
+
+changeRole();
+setInterval(changeRole, 2000); // Changes every 2 seconds
+</script>
+    <p class="tagline">
+Building <strong>Scalable Java Applications</strong>, developing <strong>Cloud-Native Microservices</strong>, and delivering <strong>Full Stack Solutions</strong> using Java, Spring Boot, React, AWS, and Kubernetes across enterprise healthcare and cloud platforms for <strong>5+ years</strong>.
+</p>
+          <div class="hero-meta">
+            <span class="meta-chip">📍NC- United States </span>
+            <span class="meta-chip">✈️ Open to Relocate</span>
+            <span class="meta-chip">✉ chivatemitali@gmail.com</span>
+            <span class="meta-chip">☏ +1 984-944-9268</span>
+            <a href="https://wa.me/19849449268?text=Welcome%20to%20Mitali%20Chivate"
+   target="_blank"
+   class="meta-chip">
+   💬 WhatsApp</a>
+          </div>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="Mitali_Chivate_Resume.pdf" download>📄 Download Resume</a>
+            <a class="btn btn-ghost" href="https://www.linkedin.com/in/mitali-chivate" target="_blank" rel="noopener">View LinkedIn</a>
+          </div>
+        </div>
+
+        <div class="hero-side">
+          <div class="camera-frame">
+            <div class="cam-head">
+              <span>CAM-01 · ON-SITE</span>
+              <span class="rec"><span class="rec-dot" aria-hidden="true"></span>REC <span id="camClock">00:00:00</span></span>
+            </div>
+            <div class="cam-viewport">
+              <span class="corner tl" aria-hidden="true"></span>
+              <span class="corner tr" aria-hidden="true"></span>
+              <span class="corner bl" aria-hidden="true"></span>
+              <span class="corner br" aria-hidden="true"></span>
+              <img src="pic.png" alt="Mitali Chivate">
+   </div> 
+              <div class="cam-foot">
+              <span>Mitali Chivate</span>
+              <span class="status-pill complete" style="padding:2px 8px;font-size:9.5px;">Verified</span>
+            </div>
+          </div>
+
+          <div class="uptime-card">
+            <div class="u-label">Years in operation</div>
+            <div class="u-value"><span id="yearCounter">0</span><small>+ yrs</small></div>
+           
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="marquee-wrap">
+  <div class="marquee" id="marquee">
+    <span>
+  <b>JAVA FULL STACK DEVELOPMENT</b> · JAVA 8/11/17 · SPRING BOOT · SPRING MVC · SPRING SECURITY · HIBERNATE · JPA · JDBC · MICROSERVICES · REST APIs · GRAPHQL · REACT.JS · TYPESCRIPT · JAVASCRIPT (ES6+) · HTML5 · CSS3 · REDUX · TAILWIND CSS · MATERIAL UI · POSTGRESQL · MYSQL · MONGODB · REDIS · APACHE KAFKA · RABBITMQ · AWS · DOCKER · KUBERNETES · JENKINS · GITHUB ACTIONS · CI/CD · MAVEN · GIT · POSTMAN · JUNIT 5 · MOCKITO · SWAGGER · PROMETHEUS · GRAFANA · JWT · OAUTH2 · AGILE/SCRUM ·
+</span>
+
+<span>
+  <b>SOFTWARE ENGINEERING</b> · CLOUD-NATIVE APPLICATIONS · DISTRIBUTED SYSTEMS · EVENT-DRIVEN ARCHITECTURE · API DEVELOPMENT · DATABASE DESIGN · SQL OPTIMIZATION · PERFORMANCE TUNING · SPRING CLOUD · AWS EC2 · AWS S3 · AWS RDS · AWS LAMBDA · AWS EKS · DOCKER · KUBERNETES · TERRAFORM · HELM · ELK STACK · DATADOG · SENTRY · OPENAI API · LANGCHAIN · GITHUB COPILOT · CHATGPT · AI-ASSISTED DEVELOPMENT · SDLC · DESIGN PATTERNS · SOLID PRINCIPLES · OOP · DEVOPS · UNIT TESTING · INTEGRATION TESTING ·
+</span>
+  </div>
+</div>
+  </section>
+<!-- STORY REPORT -->
+<section id="about">
+  <div class="wrap reveal">
+    <div class="eyebrow">Professional Journey — Software Engineering Story</div>
+
+    <div class="report-panel">
+      <div class="tag-row">
+        <span>Software Engineer</span>
+        <span>EXPERIENCE: 5+ YEARS</span>
+      </div>
+
+      <p>
+        My journey in software development began with a passion for solving complex problems through technology. Starting as a Java Developer, I built a strong foundation in object-oriented programming, data structures, and enterprise application development using Java and Spring technologies.
+      </p>
+
+      <p>
+        As my career progressed, I expanded into Full Stack Development, designing scalable microservices, building responsive React.js applications, developing RESTful APIs, and working with cloud-native technologies including AWS, Docker, and Kubernetes to deliver secure, high-performance enterprise solutions.
+      </p>
+
+      <p>
+        Throughout my career, I have contributed to enterprise projects across healthcare, finance, and cloud platforms, developing distributed systems, optimizing application performance, implementing CI/CD pipelines, and collaborating with cross-functional Agile teams to deliver reliable, scalable software products that create measurable business value.
+      </p>
+
+      <p>
+        Today, as a <strong>Java Full Stack Developer</strong>, I specialize in building cloud-native applications using <strong>Java, Spring Boot, React.js, PostgreSQL, Kafka, AWS, Docker, and Kubernetes</strong>. I continuously explore AI-powered development tools and modern software engineering practices to build innovative, secure, and scalable enterprise applications.
+      </p>
+
+      <blockquote>
+        "Great software is built through clean code, scalable architecture, continuous learning, and a commitment to solving real-world problems."
+      </blockquote>
+
+    </div>
+  </div>
+</section>
+  <!-- SUMMARY REPORT -->
+<section id="about">
+  <div class="wrap reveal">
+    <div class="eyebrow">Professional Profile — Overview</div>
+
+    <div class="report-panel">
+      <div class="tag-row">
+        <span>PROFILE: JAVA FULL STACK DEVELOPER</span>
+        <span>EXPERIENCE: 5+ YEARS</span>
+      </div>
+
+      <p>
+        Results-driven <strong>Java Full Stack Developer</strong> with <strong>5+ years of experience</strong> designing, developing, and deploying scalable enterprise applications using <strong>Java 8/11/17, Spring Boot, Spring MVC, Spring Security, Hibernate, JPA, Microservices, RESTful APIs, React.js, TypeScript, and PostgreSQL</strong>.
+      </p>
+
+      <p>
+        Proven expertise in <strong>Cloud-Native Application Development, Distributed Systems, Event-Driven Architecture, Apache Kafka, RabbitMQ, AWS, Docker, Kubernetes, CI/CD, Jenkins, GitHub Actions, SQL Optimization, Performance Tuning, Agile/Scrum, and DevOps</strong>, delivering secure, high-performance enterprise software solutions.
+      </p>
+
+      <p>
+        Experienced in building modern applications using <strong>React.js, JavaScript, HTML5, CSS3, Tailwind CSS, Material UI, MongoDB, Redis, GraphQL, OpenAPI/Swagger, JUnit, Mockito, Postman, Prometheus, Grafana, ELK Stack</strong>, while leveraging <strong>OpenAI APIs, GitHub Copilot, ChatGPT, and AI-assisted development</strong> to accelerate software delivery and innovation.
+      </p>
+    </div>
+  </div>
+</section>
+
+  <!-- EXPERIENCE / INCIDENT LOG -->
+  <section id="experience">
+    <div class="wrap">
+      <div class="reveal">
+        <div class="eyebrow">Incident Log — Career History</div>
+        <!-- <h2 class="section-title">Three roles. Zero unresolved.</h2> -->
+       <p class="section-sub">A chronological record of projects delivered, teams led, and solutions implemented across engineering, Salesforce, and enterprise transformation initiatives.</p>
+      </div>
+
+      <div class="log-line">
+
+        <div class="ticket is-current reveal">
+         <div class="ticket-head">
+  <span class="ticket-id">PRJ-2024-09 · SOFTWARE ENGINEER</span>
+  <span class="status-pill warn">Current</span>
+</div>
+
+<h3><span class="org">Cotiviti</span> — North Carolina, United States</h3>
+
+<div class="when">Sep 2024 — Present</div>
+
+<ul>
+<li>Developed scalable healthcare applications using Java 17, Spring Boot, Spring Security, Hibernate, and Microservices supporting claims processing, payment integrity, and provider management.</li>
+
+<li>Designed and implemented secure REST APIs and GraphQL integrations enabling real-time claims validation, member eligibility verification, and provider data exchange across enterprise healthcare systems.</li>
+
+<li>Built event-driven microservices using Apache Kafka and RabbitMQ, improving communication between distributed services while reducing processing latency for high-volume healthcare transactions.</li>
+
+<li>Optimized PostgreSQL, Oracle, Hibernate, JPA, and Redis performance through query tuning, indexing strategies, and database optimization, improving application responsiveness.</li>
+
+<li>Developed responsive React.js and TypeScript dashboards providing real-time healthcare analytics, operational insights, and claims monitoring for business users.</li>
+
+<li>Deployed cloud-native applications on AWS EC2, ECS, EKS, Lambda, RDS, and S3 using Docker, Kubernetes, Helm, Terraform, and CI/CD pipelines for highly available production deployments.</li>
+
+<li>Implemented monitoring with Prometheus, Grafana, ELK Stack, Datadog, CloudWatch, and Sentry, proactively resolving production issues while maintaining high system availability.</li>
+
+<li>Collaborated with Agile teams throughout SDLC, leveraging GitHub Copilot, ChatGPT, and OpenAI APIs to improve development productivity, code quality, and delivery efficiency.</li>
+</ul>
+
+<div class="tag-list">
+<span>Java</span>
+<span>Spring Boot</span>
+<span>AWS</span>
+<span>Kafka</span>
+<span>React.js</span>
+<span>Kubernetes</span>
+<span>CI/CD</span>
+</div>
+        </div>
+
+        <div class="ticket reveal">
+          <div class="ticket-head">
+<span class="ticket-id">INC-2023-01 · GRADUATE ASSISTANT</span>
+</div>
+
+<h3><span class="org">University of North Carolina Charlotte</span> — North Carolina, United States</h3>
+
+<div class="when">Jan 2023 — May 2024</div>
+
+<ul>
+
+<li>Assisted faculty in developing Java and Spring Boot applications while implementing REST APIs and business logic for academic software systems.</li>
+
+<li>Designed and optimized PostgreSQL database schemas and SQL queries supporting research data, reporting, and enterprise-level academic applications.</li>
+
+<li>Developed unit and integration tests using JUnit, Mockito, Maven, Git, and Postman while participating in code reviews and software documentation.</li>
+
+<li>Supported AWS EC2, S3, Docker, and CI/CD deployments while monitoring application performance and resolving production issues.</li>
+
+<li>Worked closely with faculty and student teams to automate workflows using AI-assisted development tools including GitHub Copilot and ChatGPT.</li>
+
+</ul>
+
+<div class="tag-list">
+<span>Java</span>
+<span>Spring Boot</span>
+<span>AWS</span>
+<span>PostgreSQL</span>
+<span>JUnit</span>
+<span>Agile</span>
+</div>
+        </div>
+
+        <div class="ticket reveal">
+          <div class="ticket-head">
+<span class="ticket-id">INC-2021-06 · SOFTWARE ENGINEER</span>
+</div>
+
+<h3><span class="org">Brillio</span> — India</h3>
+
+<div class="when">Jun 2021 — Jul 2022</div>
+
+<ul>
+
+<li>Developed enterprise Java 11 and Spring Boot microservices with Spring Security, Hibernate, and JPA to build scalable backend applications.</li>
+
+<li>Created responsive React.js applications integrating secure REST APIs to deliver modern enterprise user experiences.</li>
+
+<li>Optimized PostgreSQL, MySQL, Oracle databases and Redis caching strategies, significantly improving query performance and response time.</li>
+
+<li>Built event-driven systems using Apache Kafka and RabbitMQ supporting asynchronous communication across distributed microservices.</li>
+
+<li>Automated AWS deployments using Docker, Kubernetes, Jenkins, GitHub Actions, and CI/CD pipelines, reducing release time and improving deployment reliability.</li>
+
+<li>Implemented JUnit, Mockito, REST Assured, Swagger, and Postman testing frameworks to increase application quality and test coverage.</li>
+
+</ul>
+
+<div class="tag-list">
+<span>Java</span>
+<span>Spring Boot</span>
+<span>React.js</span>
+<span>AWS</span>
+<span>Kafka</span>
+<span>Docker</span>
+<span>CI/CD</span>
+</div>
+        </div>
+<div class="ticket reveal">
+  <div class="ticket-head">
+<span class="ticket-id">INC-2020-11 · SOFTWARE ANALYST</span>
+</div>
+
+<h3><span class="org">Capgemini</span> — India</h3>
+
+<div class="when">Nov 2020 — Jun 2021</div>
+
+<ul>
+
+<li>Developed enterprise applications using Java 8, Spring Boot, Hibernate, JDBC, and RESTful APIs to support business-critical applications.</li>
+
+<li>Designed and optimized PostgreSQL, MySQL, Oracle databases while implementing Redis caching and SQL performance tuning.</li>
+
+<li>Built responsive React.js interfaces integrating backend REST APIs, improving usability across multiple browsers and devices.</li>
+
+<li>Supported AWS cloud deployments using EC2, S3, RDS, Docker, Jenkins, Git, Maven, and CI/CD while troubleshooting production issues.</li>
+
+</ul>
+
+<div class="tag-list">
+<span>Java</span>
+<span>Spring Boot</span>
+<span>React.js</span>
+<span>AWS</span>
+<span>SQL</span>
+<span>CI/CD</span>
+</div>
+</div>
+
+<div class="ticket reveal">
+ <div class="ticket-head">
+<span class="ticket-id">INC-2019-10 · SOFTWARE DEVELOPER</span>
+</div>
+
+<h3><span class="org">FncallBack Technologies</span> — India</h3>
+
+<div class="when">Oct 2019 — Oct 2020</div>
+
+<ul>
+
+<li>Developed enterprise web applications using Java 8, Spring Boot, Hibernate, JPA, JDBC, and RESTful APIs delivering scalable backend solutions.</li>
+
+<li>Built responsive React.js, JavaScript, HTML5, CSS3, and TypeScript interfaces while integrating backend REST services.</li>
+
+<li>Designed and optimized MySQL, PostgreSQL, and Oracle databases through indexing, stored procedures, and SQL optimization.</li>
+
+<li>Improved application performance by implementing Redis caching and following software engineering best practices throughout SDLC.</li>
+
+</ul>
+
+<div class="tag-list">
+<span>Java</span>
+<span>Spring Boot</span>
+<span>React.js</span>
+<span>MySQL</span>
+<span>REST API</span>
+<span>Hibernate</span>
+</div>
+</div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- SKILLS / SERVICE CATALOG -->
+<section id="skills">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">Service Catalog — Technical Expertise</div>
+      <h2 class="section-title">Core Technologies & Engineering Skills</h2>
+      <p class="section-sub">A categorized overview of the technologies, frameworks, cloud platforms, and engineering practices used to build secure, scalable, and high-performance enterprise applications.</p>
+    </div>
+
+    <div class="catalog-grid">
+
+      <div class="catalog-card reveal">
+        <h4>Programming Languages</h4>
+        <div class="chip-row">
+          <span>Java 8/11/17</span><span>SQL</span><span>JavaScript (ES6+)</span><span>TypeScript</span><span>Python</span><span>C</span>
+        </div>
+      </div>
+
+      <div class="catalog-card reveal">
+        <h4>Backend Development</h4>
+        <div class="chip-row">
+          <span>Spring Boot</span><span>Spring MVC</span><span>Spring Security</span><span>Hibernate</span><span>JPA</span><span>REST APIs</span><span>GraphQL</span><span>Microservices</span>
+        </div>
+      </div>
+
+      <div class="catalog-card reveal">
+        <h4>Frontend Development</h4>
+        <div class="chip-row">
+          <span>React.js</span><span>TypeScript</span><span>JavaScript</span><span>HTML5</span><span>CSS3</span><span>Redux</span><span>Tailwind CSS</span><span>Bootstrap</span>
+        </div>
+      </div>
+
+      <div class="catalog-card reveal">
+        <h4>Cloud & DevOps</h4>
+        <div class="chip-row">
+          <span>AWS</span><span>Docker</span><span>Kubernetes</span><span>Terraform</span><span>Jenkins</span><span>GitHub Actions</span><span>Helm</span><span>CI/CD</span>
+        </div>
+      </div>
+
+      <div class="catalog-card reveal">
+        <h4>Databases</h4>
+        <div class="chip-row">
+          <span>PostgreSQL</span><span>MySQL</span><span>Oracle</span><span>MongoDB</span><span>Redis</span><span>JDBC</span>
+        </div>
+      </div>
+
+      <div class="catalog-card reveal">
+        <h4>Messaging & Distributed Systems</h4>
+        <div class="chip-row">
+          <span>Apache Kafka</span><span>RabbitMQ</span><span>Event-Driven Architecture</span><span>Distributed Systems</span><span>Asynchronous Processing</span>
+        </div>
+      </div>
+
+      <div class="catalog-card reveal">
+        <h4>Testing & API Tools</h4>
+        <div class="chip-row">
+          <span>JUnit 5</span><span>Mockito</span><span>REST Assured</span><span>Postman</span><span>Swagger/OpenAPI</span><span>Selenium</span>
+        </div>
+      </div>
+
+      <div class="catalog-card reveal">
+        <h4>Monitoring & Observability</h4>
+        <div class="chip-row">
+          <span>Prometheus</span><span>Grafana</span><span>ELK Stack</span><span>Datadog</span><span>AWS CloudWatch</span><span>Sentry</span>
+        </div>
+      </div>
+
+      <div class="catalog-card reveal">
+        <h4>Engineering Practices</h4>
+        <div class="chip-row">
+          <span>Agile Scrum</span><span>SDLC</span><span>OOP</span><span>SOLID Principles</span><span>Design Patterns</span><span>Git</span><span>AI-Assisted Development</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+  <!-- PROJECTS / DEPLOYED SOLUTIONS -->
+<section id="projects">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">Deployed Solutions</div>
+      <h2 class="section-title">Production-Ready Enterprise Applications</h2>
+      <p class="section-sub">Enterprise-grade solutions designed, developed, and deployed using modern Java, cloud-native, and AI technologies.</p>
+    </div>
+
+    <div class="deploy-grid">
+
+      <div class="deploy-card reveal">
+        <span class="ticket-id">PRJ-01 · DEPLOYED</span>
+        <h4>Healthcare Claims Processing & Payment Integrity Platform</h4>
+        <p>Developed a cloud-native healthcare platform using Java 17, Spring Boot, Microservices, Kafka, Redis, and React.js to streamline claims validation, provider management, and payment integrity with secure REST APIs and real-time analytics.</p>
+
+        <div class="tag-list">
+          <span>Java 17</span>
+          <span>Spring Boot</span>
+          <span>React.js</span>
+          <span>Kafka</span>
+          <span>AWS</span>
+          <span>Kubernetes</span>
+        </div>
+      </div>
+
+      <div class="deploy-card reveal">
+        <span class="ticket-id">PRJ-02 · DEPLOYED</span>
+        <h4>AI-Powered Provider Recommendation & Analytics Platform</h4>
+        <p>Built an AI-enabled healthcare recommendation platform integrating OpenAI APIs and LangChain for intelligent provider search, document summarization, and personalized healthcare recommendations through scalable REST APIs.</p>
+
+        <div class="tag-list">
+          <span>OpenAI API</span>
+          <span>LangChain</span>
+          <span>Spring Boot</span>
+          <span>React.js</span>
+          <span>MongoDB</span>
+          <span>PostgreSQL</span>
+        </div>
+      </div>
+
+      <div class="deploy-card reveal">
+        <span class="ticket-id">PRJ-03 · DEPLOYED</span>
+        <h4>Cloud-Native Microservices Deployment Pipeline</h4>
+        <p>Designed and automated enterprise deployment pipelines using Docker, Kubernetes, Jenkins, GitHub Actions, Terraform, and AWS, enabling secure CI/CD, infrastructure automation, monitoring, and highly available production releases.</p>
+
+        <div class="tag-list">
+          <span>AWS</span>
+          <span>Docker</span>
+          <span>Kubernetes</span>
+          <span>Terraform</span>
+          <span>Jenkins</span>
+          <span>CI/CD</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+  <!-- COMPLIANCE -->
+<section id="certifications">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">Compliance Record</div>
+      <h2 class="section-title">Certifications &amp; Education</h2>
+      <p class="section-sub">Professional certifications and academic qualifications documented as part of the engineering compliance record.</p>
+    </div>
+
+    <div class="compliance-table reveal">
+
+      <div class="crow">
+        <div>
+          <div class="c-name">AWS Certified Cloud Practitioner</div>
+          <div class="c-sub">Amazon Web Services (AWS)</div>
+        </div>
+        <span class="status-pill complete">Certified</span>
+      </div>
+
+      <div class="crow">
+        <div>
+          <div class="c-name">Java Microservices with Spring Boot &amp; Spring Cloud</div>
+          <div class="c-sub">Professional Certification</div>
+        </div>
+        <span class="status-pill complete">Certified</span>
+      </div>
+
+      <div class="crow">
+        <div>
+          <div class="c-name">Jenkins Essential</div>
+          <div class="c-sub">CI/CD &amp; DevOps Certification</div>
+        </div>
+        <span class="status-pill complete">Certified</span>
+      </div>
+
+      <div class="crow">
+        <div>
+          <div class="c-name">Master of Science — Computer Science</div>
+          <div class="c-sub">University of North Carolina Charlotte · Aug 2022 – May 2024 · GPA: 3.6/4.0</div>
+        </div>
+        <span class="status-pill complete">Completed</span>
+      </div>
+
+      <div class="crow">
+        <div>
+          <div class="c-name">Bachelor of Engineering — Information Technology</div>
+          <div class="c-sub">Savitribai Phule Pune University · Aug 2016 – May 2020 · GPA: 8.23/10</div>
+        </div>
+        <span class="status-pill complete">Completed</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+  <section id="contact-widget">
+
+  <!-- Floating WhatsApp -->
+  <a href="https://wa.me/19849449268?text=Welcome%20to%20Mitali%20Chivate"
+     class="whatsapp-float"
+     target="_blank"
+     aria-label="WhatsApp">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+  </a>
+
+  <!-- Contact Popup -->
+  <div id="contactPopup" class="popup">
+    <div class="popup-card">
+
+      <span class="close-popup">&times;</span>
+
+      <h2>👋 Welcome to Mitali Chivate</h2>
+
+     <p>
+    Java Full Stack Developer | AWS & Spring Boot <br>
+    📍 North Carolina, USA
+</p>
+
+      <div class="buttons">
+
+        <a href="https://wa.me/19849449268?text=Welcome%20to%20Mitali%20Chivate"
+           target="_blank"
+           class="btn whatsapp-btn">
+          💬 WhatsApp
+        </a>
+
+        <a href="https://www.linkedin.com/in/mitali-chivate"
+           target="_blank"
+           class="btn linkedin-btn">
+          🔗 LinkedIn
+        </a>
+
+    
+
+        <!-- Resume Download -->
+        <a href="Mitali_Chivate_Resume.pdf" download class="btn resume-btn"
+   style="background:#00E5FF; color:#0b1020; border:1px solid #00E5FF;">
+  📄 Download Resume
+</a>
+      </div>
+
+    </div>
+  </div>
+
+  <style>
+
+    /* Floating WhatsApp */
+    .whatsapp-float{
+      position:fixed;
+      right:25px;
+      bottom:25px;
+      z-index:99999;
+    }
+
+    .whatsapp-float img{
+      width:65px;
+      animation:pulse 1.2s infinite;
+      filter:drop-shadow(0 5px 15px rgba(37,211,102,.6));
+    }
+
+    @keyframes pulse{
+      0%{
+        transform:scale(1);
+      }
+      50%{
+        transform:scale(1.2);
+      }
+      100%{
+        transform:scale(1);
+      }
+    }
+
+    /* Popup Background */
+    .popup{
+      display:none;
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.6);
+      backdrop-filter:blur(5px);
+      z-index:999999;
+    }
+
+    /* Card */
+    .popup-card{
+      width:360px;
+      max-width:92%;
+      background:#fff;
+      border-radius:25px;
+      padding:30px;
+      text-align:center;
+      position:absolute;
+      top:50%;
+      left:50%;
+      transform:translate(-50%,-50%);
+      box-shadow:0 20px 40px rgba(0,0,0,.3);
+      animation:popup .5s ease;
+    }
+
+    @keyframes popup{
+      from{
+        opacity:0;
+        transform:translate(-50%,-40%);
+      }
+      to{
+        opacity:1;
+        transform:translate(-50%,-50%);
+      }
+    }
+
+    h2{
+      color:#222;
+      margin-bottom:10px;
+    }
+
+    p{
+      color:#666;
+      line-height:1.6;
+      margin-bottom:20px;
+    }
+
+    .btn{
+      display:block;
+      padding:14px;
+      margin:12px 0;
+      border-radius:15px;
+      text-decoration:none;
+      color:#fff;
+      font-weight:600;
+      transition:.3s;
+    }
+
+    .btn:hover{
+      transform:translateY(-3px);
+    }
+
+    .whatsapp-btn{
+      background:#25D366;
+    }
+
+    .linkedin-btn{
+      background:#0077B5;
+    }
+
+    .phone-btn{
+      background:#333;
+    }
+
+    .resume-btn{
+      background:linear-gradient(135deg,#ff9800,#ff5722);
+    }
+
+    .close-popup{
+      position:absolute;
+      top:15px;
+      right:20px;
+      font-size:30px;
+      cursor:pointer;
+      color:#888;
+    }
+
+  </style>
+
+  <script>
+
+    // Auto popup after 15 sec
+    setTimeout(function(){
+      document.getElementById("contactPopup").style.display="block";
+    },15000);
+
+    // Close popup
+    document.querySelector(".close-popup").onclick=function(){
+      document.getElementById("contactPopup").style.display="none";
+    }
+
+  </script>
+
+</section>
+ 
+
+</main>
+
+<footer id="contact">
+  <div class="wrap reveal">
+    <div class="contact-panel">
+      <div class="eyebrow">Let's Connect</div>
+      <h2 style="color: #00E5FF;">Have an opportunity in mind?</h2>
+
+<p>
+  Open to <strong>full-time</strong>, <strong>contract</strong>, and
+  <strong>W2 opportunities</strong> across the United States. Currently based in
+  <strong>North Carolina, USA</strong> and authorized to work in the U.S.
+  Feel free to reach out to discuss how I can contribute to your next software engineering project.
+</p>
+
+<div class="contact-links">
+    <a class="btn btn-primary" href="mailto:chivatemitali@gmail.com">
+        chivatemitali@gmail.com
+    </a>
+
+    <a class="btn btn-ghost" href="tel:+19849449268">
+        +1 (984) 944-9268
+    </a>
+
+    <a class="btn btn-ghost"
+       href="https://www.linkedin.com/in/mitali-chivate"
+       target="_blank"
+       rel="noopener">
+        LinkedIn ↗
+    </a>
+
+    <a class="btn btn-ghost"
+       href="https://wa.me/YOUR_WHATSAPP_NUMBER"
+       target="_blank"
+       rel="noopener">
+        <i class="fab fa-whatsapp"></i> WhatsApp ↗
+    </a>
+</div>
+</div>
+    </div>
+    <div class="foot-bar" style="color:#E5E7EB;">
+  <span>© 2026 Mitali Chivate</span>
+
+  <span>
+    Email:
+    <a href="mailto:chivatemitali@gmail.com"
+       style="color:#00E5FF; text-decoration:none;">
+       chivatemitali@gmail.com
+    </a>
+  </span>
+
+  <span>
+    Mobile:
+    <a href="tel:+19849449268"
+       style="color:#00E5FF; text-decoration:none;">
+       +1 (984) 944-9268
+    </a>
+  </span>
+
+  <span>
+    <a href="Mitali_Chivate_Resume.pdf"
+       download
+       style="color:#FFD700; text-decoration:none; font-weight:600;">
+       📄 Download Resume ↗
+    </a>
+  </span>
+</div>
+  </div>
+</footer>
+
+<script>
+  // mobile nav toggle
+  const navToggle = document.getElementById('navToggle');
+  const primaryNav = document.getElementById('primaryNav');
+  navToggle.addEventListener('click', () => {
+    const open = primaryNav.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', open);
+  });
+  primaryNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    primaryNav.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+  }));
+
+  // scroll reveal
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const revealEls = document.querySelectorAll('.reveal');
+  if (reduceMotion) {
+    revealEls.forEach(el => el.classList.add('is-visible'));
+  } else {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => io.observe(el));
+  }
+
+  // animated year counter
+  const counterEl = document.getElementById('yearCounter');
+  const target = 5;
+  if (reduceMotion) {
+    counterEl.textContent = target;
+  } else {
+    let current = 0;
+    const step = () => {
+      current += 1;
+      counterEl.textContent = current;
+      if (current < target) requestAnimationFrame(() => setTimeout(step, 90));
+    };
+    setTimeout(step, 400);
+  }
+
+  // last verified timestamp
+  document.getElementById('lastUpdated').textContent =
+    'Status page last verified — ' + new Date().toLocaleDateString('en-IN', { year:'numeric', month:'long', day:'numeric' });
+
+  // camera feed live clock
+  const camClock = document.getElementById('camClock');
+  if (camClock) {
+    const tick = () => { camClock.textContent = new Date().toLocaleTimeString('en-GB'); };
+    tick();
+    setInterval(tick, 1000);
+  }
+</script>
+
+</body>
+</html>
